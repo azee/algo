@@ -12,7 +12,7 @@ public class MathTable {
             for (int j = 1; j <= 10; j++){
                 System.out.print(String.format ( "%4d", j * i ));
             }
-            System.out.println("");
+            System.out.println();
         }
     }
 
