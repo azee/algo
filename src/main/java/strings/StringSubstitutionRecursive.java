@@ -1,4 +1,4 @@
-/**
+package strings; /**
  * Created with IntelliJ IDEA.
  * User: azee
  * Date: 9/9/13
@@ -8,7 +8,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,14 +27,13 @@ import java.util.List;
  *
  */
 
-public class StringSubstitutionStraight {
+public class StringSubstitutionRecursive {
 
     public static void main(String args[]){
         List<String> inputData = new ArrayList<String>();
         List<InputData> dataToProcess = new ArrayList<InputData>();
         try {
-            //inputData = getInputData(args[0]);
-            inputData = getInputData("/home/azee/IdeaProjects/algo/algo/resources/StringSubstitute.txt");
+            inputData = getInputData(args[0]);
 
         } catch (Exception e) {
             System.out.println("Error occurred while reading a file \n" + e.getMessage());
@@ -49,54 +47,28 @@ public class StringSubstitutionStraight {
         }
 
         for(InputData singleInputData : dataToProcess){
-            printResult(singleInputData.getTargetString(), singleInputData.getPatterns(), singleInputData.getReplaceTo());
+            System.out.println(formString(singleInputData.getTargetString(), singleInputData.getPatterns(), singleInputData.getReplaceTo()));
         }
 
     }
 
-
-    public static void printResult(String inputString, List<String> patterns, List<String> toSubstitute){
-        List<Data> resultData = new LinkedList<Data>();
-        AvailableData availableData = new AvailableData(inputString);
-        resultData.add(availableData);
-
+    public static String formString(String input, List<String> patterns, List<String> toSubstitute){
         for (int i = 0; i < patterns.size(); i++){
-            for (int j = 0; j < resultData.size(); j++){
-                if (!resultData.get(j).getValue().contains(patterns.get(i)) || !(resultData.get(j) instanceof AvailableData) ){
-                    continue;
-                }
-
-                int index = resultData.get(j).getValue().indexOf(patterns.get(i));
-                Data leftSubstring = new AvailableData(resultData.get(j).getValue().substring(0, index));
-                Data middleSubstring = new ProcessedData(toSubstitute.get(i));
-                Data rightSubstring = new AvailableData(resultData.get(j).getValue().substring(index + patterns.get(i).length(), resultData.get(j).getValue().length()));
-                resultData = updateResultData(resultData, leftSubstring, middleSubstring, rightSubstring, j);
+            int index = input.indexOf(patterns.get(i));
+            if (!input.contains(patterns.get(i))){
+                continue;
             }
+            String leftSubstring = input.substring(0, index);
+            String middleSubstring = toSubstitute.get(i);
+            String rightSubstring = input.substring(index + patterns.get(i).length(), input.length());
+
+            input = formString(leftSubstring, patterns, toSubstitute) + middleSubstring +
+                    formString(rightSubstring, patterns, toSubstitute);
+            break;
         }
 
-        System.out.println(formAString(resultData));
-    }
+        return input;
 
-    private static List<Data> updateResultData(List<Data> resultData, Data leftSubstring, Data middleSubstring, Data rightSubstring, int index){
-        List<Data> newData = new LinkedList<Data>();
-        for (int i = 0; i < resultData.size(); i++){
-            if (i != index){
-                newData.add(resultData.get(i));
-            }else{
-                newData.add(leftSubstring);
-                newData.add(middleSubstring);
-                newData.add(rightSubstring);
-            }
-        }
-        return newData;
-    }
-
-    private static String formAString(List<Data> results){
-        String result = "";
-        for (Data data : results){
-            result = result + data.getValue();
-        }
-        return result;
     }
 
     private static InputData parsePatterns(InputData preparedData, String values){
@@ -129,40 +101,6 @@ public class StringSubstitutionStraight {
         return characters;
     }
 
-
-    /**
-     * Inner Classes
-     */
-
-    private static class Data{
-        private String value;
-
-        public Data(String value){
-            this.value = value;
-        }
-
-        public void setValue (String in){
-            this.value = in;
-        }
-
-        public String getValue(){
-            return value;
-        }
-    }
-
-    private static class ProcessedData extends Data{
-        public ProcessedData(String value){
-            super(value);
-        }
-
-    }
-
-    private static class AvailableData extends Data{
-        public AvailableData(String value){
-            super(value);
-        }
-
-    }
 
     private static class InputData{
         private String targetString;

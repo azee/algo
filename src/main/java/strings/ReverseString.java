@@ -1,4 +1,4 @@
-/**
+package strings; /**
  * Created with IntelliJ IDEA.
  * User: azee
  * Date: 7/25/13
