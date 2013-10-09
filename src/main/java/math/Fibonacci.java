@@ -9,18 +9,28 @@ package math;
 public class Fibonacci {
     public static void main(String[] args) {
         int depth = 10;
-        System.out.print(fibonacci(0, 1, depth));
+        System.out.println(fibonacci(0, 1, depth));
+        System.out.println(fibonacciRecursive(depth));
     }
 
     public static long fibonacci(long val1, long val2, int depth){
-        long result = 0;
+        long sum;
         for (int i = 0; i < depth; i++){
-            result = val1 + val2;
+            sum = val1 + val2;
             val1 = val2;
-            val2 = result;
+            val2 = sum;
         }
-        return result;
+        return val1;
     }
 
+    private static int fibonacciRecursive(int depth) {
+        if (depth <= 0) {
+            return 0;
+        } else if (depth == 1 || depth == 2) {
+            return 1;
+        } else {
+            return fibonacciRecursive(depth - 1) + fibonacciRecursive(depth - 2);
+        }
+    }
 }
 
