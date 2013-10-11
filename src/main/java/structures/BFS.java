@@ -1,17 +1,17 @@
 package structures;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+import java.util.Queue;
 
 /**
  * Created with IntelliJ IDEA.
  * User: azee
  * Date: 10/11/13
- * Time: 4:28 PM
- */
-
-public class DFS {
+ * Time: 4:42 PM
+  */
+public class BFS {
 
     public static void main(String ...args){
         Node head = new Node("Top");
@@ -28,32 +28,20 @@ public class DFS {
         head.getChildren().add(child2);
 
         head.getChildren().add(new Node("Child 3"));
-
-        dfs(head);
+        bfs(head);
     }
 
-    //Recursion
-    public static void dfs(Node node){
-        System.out.println(node);
-        for (Node child : node.getChildren()){
-            dfs(child);
+    static void bfs(Node top){
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.add(top);
+        while (!queue.isEmpty()){
+            if (!queue.isEmpty()) top = queue.poll();
+            System.out.println(top);
+            for (Node child : top.getChildren()){
+                queue.add(child);
+            }
         }
     }
-
-    //Using stack is for binary only
-//    public static void dfsStack(Node top){
-//        Stack<Node> stack = new Stack<Node>();
-//        while (top != null || !stack.empty()){
-//            if (!stack.empty()){
-//                top = stack.pop();
-//            }
-//            while (top != null){
-//                System.out.println(top);
-//                if (top.right != null) stack.push(top.right);
-//                top=top.left;
-//            }
-//        }
-//    }
 
     public static class Node{
         List<Node> children;
@@ -87,5 +75,4 @@ public class DFS {
             return name;
         }
     }
-
 }
