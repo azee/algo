@@ -8,6 +8,8 @@ import java.util.Stack;
  * Date: 10/14/13
  * Time: 5:08 PM
   */
+
+//Sort a stack using another one
 public class Sort2Stacks {
     public static Stack<Integer> sort(Stack<Integer> s) {
         Stack<Integer> r = new Stack<Integer>();
