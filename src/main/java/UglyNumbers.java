@@ -1,28 +1,22 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: azee
- * Date: 10/15/13
- * Time: 12:28 AM
+ * Date: 10/16/13
+ * Time: 2:51 AM
  */
-public class Main {
 
+//Once upon a time in a strange situation, people called a number
+// ugly if it was divisible by any of the one-digit primes (2, 3, 5 or 7).
+// Thus, 14 is ugly, but 13 is fine. 39 is ugly, but 121 is not. Note that 0 is ugly.
+// Also note that negative numbers can also be ugly: -14 and -39 are examples of such numbers.
+public class UglyNumbers {
     public static void main(String[] args) {
-        //Getting input data
-        List<String> inputData = new ArrayList<String>();
-        try {
-            inputData = getInputData(args[0]);
-
-        } catch (Exception e) {
-            System.out.println("Error occurred while reading a file \n" + e.getMessage());
-        }
-
-        for (String singleLine : inputData){
-            printList(getStringVariant(singleLine));
-        }
+        printList(getStringVariant("12345"));
     }
 
     /**
@@ -47,21 +41,21 @@ public class Main {
 
 
 
-    public static List<Long> getStringVariant(String number){
-        List<Long> results = new ArrayList<Long>();
-        results.add(Long.parseLong(number));
+    public static List<Integer> getStringVariant(String number){
+        List<Integer> results = new ArrayList<Integer>();
+        results.add(Integer.parseInt(number));
         for(int i = 1; i < number.length(); i++){
-            for(Long subResult : getStringVariant(number.substring(i, number.length()))){
+            for(Integer subResult : getStringVariant(number.substring(i, number.length()))){
                 results.add(Integer.parseInt(number.substring(0, i)) + subResult);
             }
-            for(Long subResult : getStringVariant(number.substring(i, number.length()))){
+            for(Integer subResult : getStringVariant(number.substring(i, number.length()))){
                 results.add(Integer.parseInt(number.substring(0, i)) - subResult);
             }
         }
         return results;
     }
 
-    public static boolean isUgly(Long value){
+    public static boolean isUgly(int value){
         if(Math.abs(value % 2) == 0 || Math.abs(value % 3) == 0 || Math.abs(value % 5) == 0 || Math.abs(value % 7) == 0 || value == 0){
             return true;
         }
@@ -69,9 +63,9 @@ public class Main {
     }
 
 
-    public static void printList(List<Long> values) {
+    public static void printList(List<Integer> values) {
         int counter = 0;
-        for(Long value : values){
+        for(Integer value : values){
             if(isUgly(value)){
                 counter ++;
             }
@@ -79,6 +73,4 @@ public class Main {
         System.out.println(counter);
 
     }
-
-
 }
