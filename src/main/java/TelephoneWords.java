@@ -6,6 +6,12 @@ import java.util.*;
  * Date: 10/15/13
  * Time: 6:42 PM
  */
+
+//Given a 7 digit telephone number, print out all the possible sequences of letters
+// that can represent the given telephone number. Note that in a standard 12 key pad,
+// 0 and 1 do not have any letters associated with them.
+// They are to be treated as such, i.e. a 0/1 in the telephone number will be retained
+// in the final word as well. You may use the following mapping between numbers and characters:
 public class TelephoneWords {
     public static void main(String[] args) {
         Map<String, List<String>> map = new HashMap<String, List<String>>();
