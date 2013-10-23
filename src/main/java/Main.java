@@ -13,6 +13,7 @@ public class Main {
     public static void main(String[] args) {
         //Getting input data
         List<String> inputData = new ArrayList<String>();
+        List<Node> nodes = new LinkedList<Node>();
         try {
             inputData = getInputData(args[0]);
 
@@ -20,9 +21,24 @@ public class Main {
             System.out.println("Error occurred while reading a file \n" + e.getMessage());
         }
 
-        for (String singleLine : inputData){
-            printList(getStringVariant(singleLine));
+        for (String singleString : inputData){
+            nodes.add(prepareNode(singleString));
         }
+        calculate(nodes);
+    }
+
+    private static Node prepareNode(String singleString) {
+        Node result =  new Node();
+        String[] firstString = singleString.split("\\|");
+        result.setId(Integer.parseInt(firstString[0].trim()));
+
+        String[] secondString = firstString[1].split("\\(");
+        String dataString = secondString[1].substring(0, secondString[1].length() - 1);
+        String[] coords = dataString.split(",");
+
+        result.setX(Double.parseDouble(coords[0].trim()));
+        result.setY(Double.parseDouble(coords[1].trim()));
+        return result;
     }
 
     /**
@@ -31,54 +47,131 @@ public class Main {
      * @throws Exception
      */
     private static List<String> getInputData(String filePath) throws Exception {
-        List<String> values = new ArrayList<String>();
+        List<String> characters = new ArrayList<String>();
         BufferedReader br = new BufferedReader(new FileReader(filePath));
         try {
             String line = br.readLine();
             while (line != null) {
-                values.add(line);
+                characters.add(line);
                 line = br.readLine();
             }
         } finally {
             br.close();
         }
-        return values;
+        return characters;
     }
 
-
-
-    public static List<Long> getStringVariant(String number){
-        List<Long> results = new ArrayList<Long>();
-        results.add(Long.parseLong(number));
-        for(int i = 1; i < number.length(); i++){
-            for(Long subResult : getStringVariant(number.substring(i, number.length()))){
-                results.add(Integer.parseInt(number.substring(0, i)) + subResult);
-            }
-            for(Long subResult : getStringVariant(number.substring(i, number.length()))){
-                results.add(Integer.parseInt(number.substring(0, i)) - subResult);
-            }
-        }
-        return results;
-    }
-
-    public static boolean isUgly(Long value){
-        if(Math.abs(value % 2) == 0 || Math.abs(value % 3) == 0 || Math.abs(value % 5) == 0 || Math.abs(value % 7) == 0 || value == 0){
-            return true;
-        }
-        return false;
-    }
-
-
-    public static void printList(List<Long> values) {
-        int counter = 0;
-        for(Long value : values){
-            if(isUgly(value)){
-                counter ++;
+    public static void calculate(List<Node> nodes){
+        Node head = nodes.get(0);
+        nodes.remove(0);
+        double minPath = Double.MAX_VALUE;
+        List<Node> bestPath = new LinkedList<Node>();
+        List<List<Node>> result = permutate(nodes);
+        for(List<Node> nodesList : result){
+            List<Node> listWithHead = new LinkedList<Node>();
+            listWithHead.add(head);
+            listWithHead.addAll(nodesList);
+            Double fullPath = countPath(listWithHead);
+            if (fullPath < minPath){
+                minPath = fullPath;
+                bestPath = listWithHead;
             }
         }
-        System.out.println(counter);
+        printList(bestPath);
+    }
+
+    public static double countPath(List<Node> nodes){
+        double result = 0;
+        for(int i = 0; i < nodes.size() - 1; i++){
+            result = result + countDistance(nodes.get(i), nodes.get(i + 1));
+        }
+        return result;
+    }
+
+    public static List<List<Node>> permutate(List<Node> nodes){
+        List<List<Node>> result = new LinkedList<List<Node>>();
+
+        if (nodes.size() == 1){
+            List<Node> singleNode = new LinkedList<Node>();
+            singleNode.addAll(nodes);
+            result.add(singleNode);
+            return result;
+        }
+
+        for(int i = 0; i < nodes.size(); i++){
+            Node currNode = nodes.get(i);
+            for(List<Node> gotNodes : permutate(copyListRmEl(nodes, i))){
+                List<Node> gotNodesList = new LinkedList<Node>();
+                gotNodesList.add(currNode);
+                gotNodesList.addAll(gotNodes);
+                result.add(gotNodesList);
+            }
+        }
+        return result;
 
     }
 
+    public static class Node{
+        double x;
+        double y;
+        int id;
 
+        public Node(int id, double x, double y) {
+            this.x = x;
+            this.y = y;
+            this.id = id;
+        }
+
+        public Node() {
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public void setX(double x) {
+            this.x = x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public void setY(double y) {
+            this.y = y;
+        }
+
+    }
+
+    public static List<Node> copyListRmEl(List<Node> input, int element){
+        List<Node> output = new LinkedList<Node>();
+        for (int i = 0; i < input.size(); i++){
+            if (i != element){
+                Node oldNode = input.get(i);
+                Node newNode = new Node(oldNode.getId(), oldNode.getX(), oldNode.getY());
+                output.add(newNode);
+            }
+        }
+        return output;
+    }
+
+    public static double countDistance(Node from, Node to){
+        double xDist = Math.abs(Math.abs(to.getX()) - Math.abs(from.getX()));
+        double yDist = Math.abs(Math.abs(to.getY()) - Math.abs(from.getY()));
+        return Math.sqrt(xDist * xDist + yDist * yDist);
+    }
+
+    public static void printList(List<Node> nodes){
+        for(Node node : nodes){
+            System.out.println(node.getId());
+        }
+    }
 }

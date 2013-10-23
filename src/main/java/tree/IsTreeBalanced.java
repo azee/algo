@@ -1,4 +1,4 @@
-package structures;
+package tree;
 
 /**
  * Created with IntelliJ IDEA.
