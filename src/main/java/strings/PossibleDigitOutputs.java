@@ -1,23 +1,21 @@
-import java.util.*;
+package strings;
 
 /**
- * Created by azee on 22.12.14.
+ * Created by azee on 14.01.15.
+ * 2--b
+ ...
+ 26--z
+ given a digit , return the count of the possible output
+ eg. '1313' --- 4
+ acac mac mm acm
+ '101' --1
+ ja
+ cannot discard any digit
  */
-public class Main {
-    public static void main(String... args) {
-        count = 0;
-        count("1313");
-        System.out.println(count);
+public class PossibleDigitOutputs {
+    int count;
 
-        count = 0;
-        count("101");
-        System.out.println(count);
-
-    }
-
-    static int count;
-
-    public static void count(String value){
+    public void count(String value){
         int digit;
         if (value.length() == 0){
             count++;
@@ -38,6 +36,4 @@ public class Main {
             }
         }
     }
-
-
 }
