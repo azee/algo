@@ -59,7 +59,7 @@ public class MergeSort {
         int tmpPos = leftPos;
         int numElements = rightEnd - leftPos + 1;
 
-        // Main loop
+        // ClosestAncestor loop
         while( leftPos <= leftEnd && rightPos <= rightEnd )
             if( array[ leftPos ].compareTo( array[ rightPos ] ) <= 0 )
                 tmpArray[ tmpPos++ ] = array[ leftPos++ ];
