@@ -1,41 +1,53 @@
-import java.util.*;
+
 
 /**
  * Created by azee on 22.12.14.
  */
 public class Main {
     public static void main(String... args) {
-        count = 0;
-        count("1313");
-        System.out.println(count);
-
-        count = 0;
-        count("101");
-        System.out.println(count);
-
+        Node node = build();
+        print(node);
+        System.out.println();
+        print(reverse(node, null));
     }
 
-    static int count;
-
-    public static void count(String value){
-        int digit;
-        if (value.length() == 0){
-            count++;
-            return;
-        }
-
-        digit = Integer.parseInt(value.substring(0, 1));
-        if (digit > 0){
-            count(value.substring(1));
-        } else{
-            return;
-        }
-
-        if (value.length() >= 2){
-            digit = Integer.parseInt(value.substring(0, 2));
-            if (digit <= 26 && digit > 0){
-                count(value.substring(2));
+    public static Node reverse(Node node, Node prev){
+        while (node != null){
+            Node oldNext = node.next;
+            node.next = prev;
+            prev = node;
+            if (oldNext == null){
+                return node;
             }
+            node = oldNext;
+        }
+        return null;
+    }
+
+
+
+    public static Node build(){
+        Node node3 = new Node(3, null);
+        Node node2 = new Node(2, node3);
+        Node node1 = new Node(1, node2);
+        Node head = new Node(0, node1);
+        return head;
+    }
+
+    public static void print (Node node){
+        while (node != null){
+            System.out.print(node.x);
+            node = node.next;
+        }
+    }
+
+    static class Node{
+        int x;
+        Node next;
+
+        public Node(int x, Node next){
+            this.x = x;
+            this.next = next;
         }
     }
 
