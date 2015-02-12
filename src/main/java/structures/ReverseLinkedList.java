@@ -1,16 +1,19 @@
+package structures;
+
 /**
  * Created by azee on 14.01.15.
  */
 public class ReverseLinkedList {
 
-    public void test() {
+    public static void main(String... args) {
         Node node = build();
         print(node);
         System.out.println();
-        print(reverse(node, null));
+        print(reverse(node));
     }
 
-    public Node reverse(Node node, Node prev){
+    public static Node reverse(Node node){
+        Node prev = null;
         while (node != null){
             Node oldNext = node.next;
             node.next = prev;
@@ -23,7 +26,7 @@ public class ReverseLinkedList {
         return null;
     }
 
-    public Node build(){
+    public static Node build(){
         Node node3 = new Node(3, null);
         Node node2 = new Node(2, node3);
         Node node1 = new Node(1, node2);
@@ -31,7 +34,7 @@ public class ReverseLinkedList {
         return head;
     }
 
-    public void print (Node node){
+    public static void print (Node node){
         while (node != null){
             System.out.print(node.x);
             node = node.next;

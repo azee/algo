@@ -1,55 +1,44 @@
-
+import javax.xml.bind.annotation.XmlEnumValue;
 
 /**
  * Created by azee on 22.12.14.
  */
 public class Main {
     public static void main(String... args) {
-        Node node = build();
-        print(node);
-        System.out.println();
-        print(reverse(node, null));
+        for (CacheName cacheName : CacheName.values()){
+            System.out.println(cacheName.value());
+        }
     }
 
-    public static Node reverse(Node node, Node prev){
-        while (node != null){
-            Node oldNext = node.next;
-            node.next = prev;
-            prev = node;
-            if (oldNext == null){
-                return node;
+    public enum CacheName {
+
+        @XmlEnumValue("configCache")
+        CONFIG_CACHE("configCache"),
+        @XmlEnumValue("userCache")
+        USER_CACHE("userCache"),
+        @XmlEnumValue("packCache")
+        PACK_CACHE("packCache");
+        private final String value;
+
+        CacheName(String v) {
+            value = v;
+        }
+
+        public String value() {
+            return value;
+        }
+
+        public static CacheName fromValue(String v) {
+            for (CacheName c: CacheName.values()) {
+                if (c.value.equals(v)) {
+                    return c;
+                }
             }
-            node = oldNext;
+            throw new IllegalArgumentException(v);
         }
-        return null;
+
     }
 
-
-
-    public static Node build(){
-        Node node3 = new Node(3, null);
-        Node node2 = new Node(2, node3);
-        Node node1 = new Node(1, node2);
-        Node head = new Node(0, node1);
-        return head;
-    }
-
-    public static void print (Node node){
-        while (node != null){
-            System.out.print(node.x);
-            node = node.next;
-        }
-    }
-
-    static class Node{
-        int x;
-        Node next;
-
-        public Node(int x, Node next){
-            this.x = x;
-            this.next = next;
-        }
-    }
 
 
 }
