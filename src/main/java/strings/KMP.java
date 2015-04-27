@@ -6,24 +6,24 @@ package strings;
 public class KMP {
     private static int[] failure;
 
-    public static int find(String text, String toFind) {
+    public static int find(String haystack, String needle) {
         /** pre construct failure array for a pattern **/
-        failure = new int[toFind.length()];
-        fail(toFind);
-        return posMatch(text, toFind);
+        failure = new int[needle.length()];
+        prefix(needle);
+        return posMatch(haystack, needle);
     }
 
     /** Failure function for a pattern **/
-    private static void fail(String pattern)
+    private static void prefix(String needle)
     {
-        int n = pattern.length();
+        int n = needle.length();
         failure[0] = -1;
         for (int j = 1; j < n; j++)
         {
             int i = failure[j - 1];
-            while ((pattern.charAt(j) != pattern.charAt(i + 1)) && i >= 0)
+            while ((needle.charAt(j) != needle.charAt(i + 1)) && i >= 0)
                 i = failure[i];
-            if (pattern.charAt(j) == pattern.charAt(i + 1))
+            if (needle.charAt(j) == needle.charAt(i + 1))
                 failure[j] = i + 1;
             else
                 failure[j] = -1;
@@ -31,14 +31,14 @@ public class KMP {
     }
 
     /** Function to find match for a pattern **/
-    private static int posMatch(String text, String pattern)
+    private static int posMatch(String haystack, String needle)
     {
         int i = 0, j = 0;
-        int lens = text.length();
-        int lenp = pattern.length();
+        int lens = haystack.length();
+        int lenp = needle.length();
         while (i < lens && j < lenp)
         {
-            if (text.charAt(i) == pattern.charAt(j))
+            if (haystack.charAt(i) == needle.charAt(j))
             {
                 i++;
                 j++;
