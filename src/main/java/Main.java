@@ -1,43 +1,51 @@
-import javax.xml.bind.annotation.XmlEnumValue;
+import strings.KMP;
+import structures.KMPArray;
+
+import java.io.*;
+import java.net.*;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by azee on 22.12.14.
  */
 public class Main {
-    public static void main(String... args) {
-        for (CacheName cacheName : CacheName.values()){
-            System.out.println(cacheName.value());
+    Set<String> blackList = new HashSet<String>(Arrays.asList("abstract", "assert", "boolean", "break",
+            "byte", "case", "catch", "char", "class", "const", "continue",
+            "default", "do", "double", "else", "enum", "extends", "false",
+            "final", "finally", "float", "for", "goto", "if", "implements",
+            "import", "instanceof", "int", "interface", "long", "native",
+            "new", "null", "package", "private", "protected", "public",
+            "return", "short", "static", "strictfp", "super", "switch",
+            "synchronized", "this", "throw", "throws", "transient", "true",
+            "try", "void", "volatile", "while"));
+
+    void addAllowed(String word, int lineNumber) {
+        if (!blackList.contains(word)){
+            add(word, lineNumber);
         }
     }
 
-    public enum CacheName {
+    void add(String word, int lineNumber){
+        //ToDo: code to add word to database
+    }
 
-        @XmlEnumValue("configCache")
-        CONFIG_CACHE("configCache"),
-        @XmlEnumValue("userCache")
-        USER_CACHE("userCache"),
-        @XmlEnumValue("packCache")
-        PACK_CACHE("packCache");
-        private final String value;
 
-        CacheName(String v) {
-            value = v;
-        }
+    public static void main(String... args) throws IOException {
 
-        public String value() {
-            return value;
-        }
+        String val = "I have $USD in pocket $USD";
+        System.out.println(val.replaceAll("\\$"+"USD", "EURO"));
 
-        public static CacheName fromValue(String v) {
-            for (CacheName c: CacheName.values()) {
-                if (c.value.equals(v)) {
-                    return c;
-                }
-            }
-            throw new IllegalArgumentException(v);
-        }
+
 
     }
+
+
+
+
+
 
 
 
