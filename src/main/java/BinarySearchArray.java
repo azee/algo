@@ -1,15 +1,11 @@
-
-import java.io.CharArrayReader;
-import java.io.File;
-import java.util.*;
-
-import static java.util.stream.Collectors.toList;
-
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Created by azee on 22.12.14.
+ * Created by azee on 02.02.16.
  */
-public class Main {
+public class BinarySearchArray {
     public static void main(String[] args)
     {
         Integer[] data = {7, 4, 5, 1, 9, 10, -1, 0};
