@@ -1,70 +1,176 @@
 
-import java.io.CharArrayReader;
-import java.io.File;
-import java.util.*;
+import jdk.internal.org.objectweb.asm.tree.IincInsnNode;
+import utils.HTML2Md;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
-
 
 /**
  * Created by azee on 22.12.14.
  */
-public class Main {
-    public static void main(String[] args)
-    {
-        Integer[] data = {7, 4, 5, 1, 9, 10, -1, 0};
-        List<Integer> dataList = Arrays.asList(data);
-        Collections.sort(dataList);
-        System.out.println(find(dataList, -1));
-        System.out.println(find(dataList, 0));
-        System.out.println(find(dataList, 7));
-        System.out.println(find(dataList, 4));
-        System.out.println(find(dataList, 5));
-        System.out.println(find(dataList, 1));
-        System.out.println(find(dataList, 9));
-        System.out.println(find(dataList, 10));
-        //System.out.println(find(dataList, 101));
-        /////////////////////
-        System.out.println(findIndex(data, -1, data.length/2));
-        System.out.println(findIndex(data, 0, data.length/2));
-        System.out.println(findIndex(data, 1, data.length/2));
-        System.out.println(findIndex(data, 4, data.length/2));
-        System.out.println(findIndex(data, 5, data.length/2));
-        System.out.println(findIndex(data, 7, data.length/2));
-        System.out.println(findIndex(data, 9, data.length/2));
-        System.out.println(findIndex(data, 10, data.length/2));
+public class Main{
+
+    public static void main(String... args) throws IOException {
+
+
+
+
+
+
     }
 
 
-    public static int findIndex(Integer[] data, int toSearch, int currIndex){
-        if (currIndex < 0 || currIndex > data.length - 1){
-            throw new RuntimeException("Not found");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  public static void main(String... args) throws IOException {
+//    System.out.println(new Main().solution(new int[]{1, 5, 3, 3, 7}));
+//      System.out.println(new Main().solution(new int[]{1, 3, 5, 3, 4}));
+//      System.out.println(new Main().solution(new int[]{1, 3, 5}));
+//
+//  }
+
+    public boolean solution(int[] A) {
+        int buffer;
+        for (int i = 0; i < A.length; i++){
+            if (i == A.length - 1){
+                return isSorted(A);
+            }
+
+            for (int j = 0; j < A.length; j++){
+                if (A[i] > A[j]){
+                    buffer = A[i];
+                    A[i] = A[j];
+                    A[j] = buffer;
+
+                    if (isSorted(A)){
+                        return true;
+                    } else {
+                        buffer = A[i];
+                        A[i] = A[j];
+                        A[j] = buffer;
+                    }
+                }
+            }
+
         }
-
-        int median = data[currIndex];
-        if (median == toSearch){
-            return currIndex;
-        }
-
-        int range = Math.min(data.length - currIndex, currIndex)/2;
-        range = Math.max(1, range);
-
-        return median > toSearch ? findIndex(data, toSearch, currIndex - range) :
-                findIndex(data, toSearch, currIndex + range);
+        return false;
     }
 
 
-    public static int find(List<Integer> data, int toSearch){
-        if (data.size() == 0){
-            throw new RuntimeException("Not found");
+    public boolean isSorted(int[] A){
+        for (int i = 0; i < A.length; i++){
+            if (i == A.length - 1){
+                return true;
+            }
+            for (int j = i + 1; j < A.length; j++){
+                if (A[i] > A[j]){
+                    return false;
+                }
+            }
         }
-        int val = data.get(data.size()/2);
-
-        if (toSearch == val){
-            return val;
-        }
-        return toSearch > val ? find(data.subList(data.size()/2 + 1, data.size()), toSearch) :
-                find(data.subList(0, data.size()/2), toSearch);
-
+        return true;
     }
+
+
+//    public int solution(int[] A) {
+//        int result = Integer.MAX_VALUE;
+//        if (A == null || A.length == 0){
+//            return result;
+//        }
+//        if (A.length == 1){
+//            return A[0];
+//        }
+//
+//        for (int i = 0; i < A.length; i++){
+//            int tempResult = A[i];
+//            if (i == A.length - 1){
+//                result = Math.min(result, Math.abs(tempResult));
+//            }
+//            else {
+//                for (int j = i + 1; j < A.length; j++){
+//                    tempResult += A[j];
+//                    result = Math.min(result, Math.abs(tempResult));
+//                }
+//            }
+//        }
+//        return result;
+//    }
+
+
+
+
+
+//    public int solution(int[] A) {
+//        int maxDepth = -1;
+//        if (A == null || A.length <= 3){
+//            return maxDepth;
+//        }
+//
+//        int p = 0;
+//        int q = 0;
+//        int r = 0;
+//
+//        int persistedP = 0;
+//        int persistedQ = 0;
+//
+//        for (int i = 0; r < A.length; i++){
+//            p = i;
+//            q = i + 1;
+//            r = i + 2;
+//            if (A[p] <= A[q]){
+//                continue;
+//            }
+//
+//            persistedP = p;
+//
+//            while (q < A.length && A[persistedP] > A[q]){
+//                persistedP++;
+//                q++;
+//            }
+//            q--;
+//
+//            persistedQ = q;
+//            r = q + 1;
+//            while (r < A.length && A[persistedQ] < A[r]){
+//                maxDepth = Math.max(maxDepth, Math.min(A[p] - A[q], A[r] - A[q]));
+//                persistedQ++;
+//                r++;
+//            }
+//            r--;
+//
+//            if (p < q && q < r){
+//                maxDepth = Math.max(maxDepth, Math.min(A[p] - A[q], A[r] - A[q]));
+//            }
+//        }
+//        return maxDepth;
+//    }
+
+
 }

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.greatbit</groupId>
+    <artifactId>algo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <spring.version>4.2.4.RELEASE</spring.version>
+        <tms.version>1.28-SNAPSHOT</tms.version>
+        <jersey.version>1.19</jersey.version>
+        <hibernate.version>4.3.6.Final</hibernate.version>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>ru.yandex.qatools.tms</groupId>
+            <version>${tms.version}</version>
+            <artifactId>beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.tms</groupId>
+            <version>${tms.version}</version>
+            <artifactId>common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.tms</groupId>
+            <version>${tms.version}</version>
+            <artifactId>trackers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.tms</groupId>
+            <version>${tms.version}</version>
+            <artifactId>client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.tms</groupId>
+            <version>${tms.version}</version>
+            <artifactId>sttracker</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>ru.yandex.qatools.compare</groupId>
+            <artifactId>compare-beans</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>ru.greatbit</groupId>
+            <artifactId>java-utils</artifactId>
+            <version>1.14</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
+
+
+        <!-- MySQL -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <!--Spring-ORM-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.8.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <strict>true</strict>
+                    <verbose>true</verbose>
+                    <extension>true</extension>
+                    <removeOldOutput>true</removeOldOutput>
+                    <schemaDirectory>src/xsd/beans</schemaDirectory>
+                    <schemaDirectory>src/xsd/beans</schemaDirectory>
+                    <addCompileSourceRoot>true</addCompileSourceRoot>
+                    <generatePackage>ru.yandex.qatools.tms.migration.beans</generatePackage>
+                    <args>
+                        <arg>-Xannotate</arg>
+                        <arg>-Xdefault-value</arg>
+                    </args>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics-annotate</artifactId>
+                            <version>0.6.3</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-basics</artifactId>
+                            <version>0.6.3</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2_commons</groupId>
+                            <artifactId>jaxb2-default-value</artifactId>
+                            <version>1.1</version>
+                        </plugin>
+                    </plugins>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

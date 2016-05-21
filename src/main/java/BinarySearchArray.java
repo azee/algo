@@ -8,7 +8,7 @@ import java.util.List;
 public class BinarySearchArray {
     public static void main(String[] args)
     {
-        Integer[] data = {7, 4, 5, 1, 9, 10, -1, 0};
+        Integer[] data = {7, 4, 5, 1, 9, 10, -1, 0, 25, 35};
         List<Integer> dataList = Arrays.asList(data);
         Collections.sort(dataList);
         System.out.println(find(dataList, -1));
@@ -21,6 +21,9 @@ public class BinarySearchArray {
         System.out.println(find(dataList, 10));
         //System.out.println(find(dataList, 101));
         /////////////////////
+        System.out.println();
+        System.out.println();
+        /////////////////////
         System.out.println(findIndex(data, -1, data.length/2));
         System.out.println(findIndex(data, 0, data.length/2));
         System.out.println(findIndex(data, 1, data.length/2));
@@ -29,8 +32,62 @@ public class BinarySearchArray {
         System.out.println(findIndex(data, 7, data.length/2));
         System.out.println(findIndex(data, 9, data.length/2));
         System.out.println(findIndex(data, 10, data.length/2));
+
+        /////////////////////
+        System.out.println();
+        System.out.println();
+        /////////////////////
+        System.out.println(findIndex(data, -1, 0, data.length - 1));
+        System.out.println(findIndex(data, 0, 0, data.length - 1));
+        System.out.println(findIndex(data, 1, 0, data.length - 1));
+        System.out.println(findIndex(data, 4, 0, data.length - 1));
+        System.out.println(findIndex(data, 5, 0, data.length - 1));
+        System.out.println(findIndex(data, 7, 0, data.length - 1));
+        System.out.println(findIndex(data, 9, 0, data.length - 1));
+        System.out.println(findIndex(data, 10, 0, data.length - 1));
+
+
+        /////////////////////
+        System.out.println();
+        System.out.println();
+        /////////////////////
+        System.out.println(findClosestIndex(data, -1, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 0, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 1, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 4, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 5, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 7, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 9, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 10, 0, data.length - 1));
+        System.out.println(findClosestIndex(data, 39, 0, data.length - 1));
     }
 
+    public static int findClosestIndex(Integer[] data, int toSearch, int left, int right){
+        int median = (left + right) / 2;
+        while (left <= right){
+            if (data[median] > toSearch){
+                return findClosestIndex(data, toSearch, left, --median);
+            } else {
+                return findClosestIndex(data, toSearch, ++median, right);
+            }
+        }
+        return median;
+    }
+
+    public static int findIndex(Integer[] data, int toSearch, int left, int right){
+        while (left <= right){
+            int median = (left + right) / 2;
+            if (data[median] == toSearch){
+                return median;
+            }
+            if (data[median] > toSearch){
+                return findIndex(data, toSearch, left, --median);
+            } else {
+                return findIndex(data, toSearch, ++median, right);
+            }
+        }
+        throw new RuntimeException("Not found");
+    }
 
     public static int findIndex(Integer[] data, int toSearch, int currIndex){
         if (currIndex < 0 || currIndex > data.length - 1){
