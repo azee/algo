@@ -1,176 +1,250 @@
+import javafx.beans.binding.IntegerExpression;
 
-import jdk.internal.org.objectweb.asm.tree.IincInsnNode;
-import utils.HTML2Md;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 /**
- * Created by azee on 22.12.14.
+ * Created by azee on 24.05.16.
  */
-public class Main{
+public class Main {
 
-    public static void main(String... args) throws IOException {
-
-
-
-
-
-
+    interface CustomerPurchase {
+        String getCustomerId();
+        String getProductCategory();
     }
 
+    public static void main(String[] args) {
+        List<CustomerPurchase> customerPurchases = new LinkedList<>();
+        customerPurchases.add(_createCustomerPurchase("A Book"));
+        customerPurchases.add(_createCustomerPurchase("A Pet"));
+        customerPurchases.add(_createCustomerPurchase("B Pet"));
+        customerPurchases.add(_createCustomerPurchase("C Pet"));
+//        customerPurchases.add(_createCustomerPurchase("C Book"));
 
 
+        System.out.print(countExclusiveCustomers(customerPurchases));
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  public static void main(String... args) throws IOException {
-//    System.out.println(new Main().solution(new int[]{1, 5, 3, 3, 7}));
-//      System.out.println(new Main().solution(new int[]{1, 3, 5, 3, 4}));
-//      System.out.println(new Main().solution(new int[]{1, 3, 5}));
-//
-//  }
-
-    public boolean solution(int[] A) {
-        int buffer;
-        for (int i = 0; i < A.length; i++){
-            if (i == A.length - 1){
-                return isSorted(A);
-            }
-
-            for (int j = 0; j < A.length; j++){
-                if (A[i] > A[j]){
-                    buffer = A[i];
-                    A[i] = A[j];
-                    A[j] = buffer;
-
-                    if (isSorted(A)){
-                        return true;
-                    } else {
-                        buffer = A[i];
-                        A[i] = A[j];
-                        A[j] = buffer;
-                    }
-                }
-            }
-
+    private static CustomerPurchase _createCustomerPurchase(String line) {
+        final String[] split = line.split(" ");
+        if (split.length != 2) {
+            return null;
         }
-        return false;
+        return new CustomerPurchase() {
+            @Override
+            public String getCustomerId() {
+                return split[0];
+            }
+
+            @Override
+            public String getProductCategory() {
+                return split[1];
+            }
+        };
     }
 
+    static int countExclusiveCustomers(List<CustomerPurchase> customerPurchases) {
+        Map<String, Set<String>> usersGroups = new HashMap<>();
+        customerPurchases.forEach(customerPurchase -> {
+            if (!usersGroups.containsKey(customerPurchase.getCustomerId())){
+                usersGroups.put(customerPurchase.getCustomerId(), new HashSet<>());
+            }
+            usersGroups.get(customerPurchase.getCustomerId()).add(customerPurchase.getProductCategory());
+        });
 
-    public boolean isSorted(int[] A){
-        for (int i = 0; i < A.length; i++){
-            if (i == A.length - 1){
-                return true;
-            }
-            for (int j = i + 1; j < A.length; j++){
-                if (A[i] > A[j]){
-                    return false;
-                }
-            }
+        Map<Object, Long> counter = usersGroups.entrySet().stream()
+                .filter(usersGroupsList -> usersGroupsList.getValue().size() == 1)
+                .collect(java.util.stream.Collectors.groupingBy(entry -> entry.getValue(), Collectors.counting()));
+        if (counter.size() == 0){
+            return 0;
         }
-        return true;
+
+        long max = counter
+                .values().stream()
+                .max(Comparator.naturalOrder())
+                .get();
+
+        return Math.toIntExact(max);
     }
 
 
-//    public int solution(int[] A) {
-//        int result = Integer.MAX_VALUE;
-//        if (A == null || A.length == 0){
-//            return result;
-//        }
-//        if (A.length == 1){
-//            return A[0];
-//        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public static void main(String[] args) {
 //
-//        for (int i = 0; i < A.length; i++){
-//            int tempResult = A[i];
-//            if (i == A.length - 1){
-//                result = Math.min(result, Math.abs(tempResult));
-//            }
-//            else {
-//                for (int j = i + 1; j < A.length; j++){
-//                    tempResult += A[j];
-//                    result = Math.min(result, Math.abs(tempResult));
-//                }
-//            }
-//        }
-//        return result;
+//
+//
+//    Map<String, String> vals = new HashMap<>();
+//        vals.put("aa", "bb");
+//        vals.remove("dd");
+
+//        System.out.println(getDate(20));
+
+//        Set<String> str = new HashSet<>();
+//        str.add(null);
+//        str.add("aaa");
+//        Set<String> str2 = new HashSet<>();
+//        str2.addAll(str);
+//        System.out.print(str2);
+//        str2.remove("ss");
+
+
+//        String s = "add";
+//        Map<Character, String> data = new HashMap<>();
+//        data.put(s.charAt(0), "a");
+//        data.put(s.charAt(0), "1");
+//        data.put(s.toCharArray()[0], "1");
+//        System.out.println(data.size());
+//
+//
+//    }
+
+
+    private static String getDate (int cuntDay){
+        Date date = new Date();
+        date.setTime(date.getTime() + cuntDay * 24 * 60 * 60 * 1000);
+        return new SimpleDateFormat("MM/dd/yyyy").format(date);
+    }
+
+
+
+//    public static void maai(){
+//        Map<String,Object> map = new HashMap<>();
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("One");
+//        map.put("1",sb);
+//        sb.setLength(0);
+//        sb.append("Two");
+//        map.put("2",sb);
+//        sb.setLength(0);
+//        sb.append("Four");
+//        map.put("3",sb);
+//        System.out.println(map.get("3").equals("Four") ? map.get("2") : "Not valid");
 //    }
 
 
 
 
 
-//    public int solution(int[] A) {
-//        int maxDepth = -1;
-//        if (A == null || A.length <= 3){
-//            return maxDepth;
-//        }
+//    /**
+//     * Adds a watcher to all of the supplied issues.
+//     * <p/>
+//     * If there is partial success, the issues which we can modify will
+//     * be modified and the ones we cannot will be returned in an ArrayList.
+//     *
+//     * @param issues the list of issues to update
+//     * @param currentUser the user to run the operation as
+//     * @param watcher the watcher to add to the issues
+//     * @return an ArrayList<Issue> containing the issues that could not be modified
+//     */
 //
-//        int p = 0;
-//        int q = 0;
-//        int r = 0;
-//
-//        int persistedP = 0;
-//        int persistedQ = 0;
-//
-//        for (int i = 0; r < A.length; i++){
-//            p = i;
-//            q = i + 1;
-//            r = i + 2;
-//            if (A[p] <= A[q]){
-//                continue;
+//    public ArrayList<Issue> addWatcherToAll(final ArrayList<Issue> issues, final User currentUser, final User watcher)
+//    {
+//        ArrayList<Issue> successfulIssues = new ArrayList<Issue> ();
+//        ArrayList<Issue> failedIssues = new ArrayList<Issue> ();
+//        for (Issue issue : issues) {
+//            if (canWatchIssue(issue, currentUser, watcher)){
+//                successfulIssues.add (issue);
 //            }
-//
-//            persistedP = p;
-//
-//            while (q < A.length && A[persistedP] > A[q]){
-//                persistedP++;
-//                q++;
-//            }
-//            q--;
-//
-//            persistedQ = q;
-//            r = q + 1;
-//            while (r < A.length && A[persistedQ] < A[r]){
-//                maxDepth = Math.max(maxDepth, Math.min(A[p] - A[q], A[r] - A[q]));
-//                persistedQ++;
-//                r++;
-//            }
-//            r--;
-//
-//            if (p < q && q < r){
-//                maxDepth = Math.max(maxDepth, Math.min(A[p] - A[q], A[r] - A[q]));
+//            else{
+//                failedIssues.add (issue);
 //            }
 //        }
-//        return maxDepth;
+//        if (successfulIssues.isEmpty()){//<------------------- здесь - первая бага
+//            watcherManager.startWatching (currentUser, successfulIssues);
+//        }
+//        return failedIssues;
 //    }
+//
+//    private boolean canWatchIssue (Issue issue, User currentUser, User watcher){
+//        if (currentUser.equals(watcher) || currentUser.getHasPermissionToModifyWatchers()){
+//            return issue.getWatchingAllowed(watcher);//<------------------- здесь - вторая бага
+//        }
+//        return true;//<------------------- здесь - вторая бага
+//    }
+//
+//
+//
+//    public TestAddWatchers (){
+//        User user = new User ("admin");
+//        user.setHasPermissionToModifyWatchers (true);
+//        Issue goodIssue = new Issue ("Test 1");
+//        Issue badIssue = new Issue ("Test 2");
+//        goodIssue.setWatchingAllowed (user, true);
+//        badIssue.setWatchingAllowed (user, false);
+//        ArrayList<Issue> issues = new ArrayList<Issue> ();
+//        issues.add (goodIssue);
+//        issues.add (badIssue);
+//        // Assert that we pass two issues into the function
+//        assertEquals (issues.size(), 2);
+//        ArrayList<Issue> result = addWatcherToAll (issues, user, user);
+//        // Assert that only one issue failed to be updated
+//        assertEquals (result.size(), 1);
+//    }
+//
+//    public static class Issue{
+//
+//    }
+//
+
 
 
 }

@@ -26,6 +26,18 @@ public class ReverseLinkedList {
         return null;
     }
 
+    public static Node reverseRecursive(Node n, Node p){
+        if(n == null) return null;
+        if(n.next == null){ //if this is the end of the list, then this is the new head
+            n.next = p;
+            return n;
+        }
+        Node r = reverseRecursive(n.next, n);  //call reverse for the next node,
+        //using yourself as the previous node
+        n.next = p;                     //Set your next node to be the previous node
+        return r;                     //Return the head of the new list
+    }
+
     public static Node build(){
         Node node3 = new Node(3, null);
         Node node2 = new Node(2, node3);

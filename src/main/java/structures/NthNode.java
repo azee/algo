@@ -2,6 +2,7 @@ package structures;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,6 +11,18 @@ import java.util.List;
  * Time: 5:06 PM
   */
 public class NthNode {
+
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> q = new PriorityQueue<Integer>(k);
+        for(int i: nums){
+            q.offer(i);
+
+            if(q.size()>k){
+                q.poll();
+            }
+        }
+        return q.peek();
+    }
 
     public static Node walkTheTree(Node start, int steps){
         boolean fromRight = true;
@@ -79,4 +92,5 @@ public class NthNode {
             return name;
         }
     }
+
 }
